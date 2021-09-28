@@ -25,16 +25,45 @@ function App() {
   const [cartItems, setCartItems] = useState([] as CartItemType[]);
 
   const { data, isLoading, error } = useQuery<CartItemType[]>('products', getProducts);
-  const getTotalItems = (items: CartItemType[]) => null;
-  const handleAddToCart = (clickedItem: CartItemType) => null;
-  const hangleRomoveFromCart = () => null;
+
+  const getTotalItems = (items: CartItemType[]) => items.reduce((ack: number, item) => ack + item.amount, 0);
+  const handleAddToCart = (clickedItem: CartItemType) => {
+    setCartItems(check => {
+      // is the item already in the cart ?
+      const isItemInCart = check.find(item => item.id === clickedItem.id)
+
+      if (isItemInCart) {
+        return check.map(item =>
+          item.id === clickedItem.id
+            ? { ...item, amount: item.amount + 1 }
+            : item
+        );
+      }
+
+      //firt time item on cart
+      return [...check, { ...clickedItem, amount: 1 }]
+    });
+  };
+
+  const handleRomoveFromCart = (id: number) => {
+    setCartItems(check =>
+      check.reduce((ack, item) => {
+        if (item.id === id) {
+          if (item.amount === 1) return ack;
+          return [...ack, { ...item, amount: item.amount - 1 }];
+        } else {
+          return [...ack, item];
+        }
+      }, [] as CartItemType[])
+    );
+  };
 
   if (isLoading) return <LinearProgress />;
   if (error) return <div>Algo deu Errado...</div>;
   return (
     <Wrapper>
       <Drawer anchor='right' open={cartOpen} onClose={() => setCartOpen(false)}>
-        <Cart cartItems={cartItems} addToCart={handleAddToCart} removeFromCart={hangleRomoveFromCart} />
+        <Cart cartItems={cartItems} addToCart={handleAddToCart} removeFromCart={handleRomoveFromCart} />
       </Drawer>
       <StyledButton onClick={() => setCartOpen(true)}>
         <Badge badgeContent={getTotalItems(cartItems)} color='error'>

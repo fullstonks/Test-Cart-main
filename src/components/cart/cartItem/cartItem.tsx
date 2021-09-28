@@ -16,8 +16,8 @@ const CartItem: React.FC<Props> = ({ item, addToCart, removeFromCart }) =>
     <div>
       <h3>{item.name}</h3>
       <div className="info">
-        <p>Preço: R${item.price}</p>
-        <p>Total: R${(item.amount * item.price).toFixed(2)}</p>
+        <p>Preço: R${item.price.toString().replace('.', ',')}</p>
+        <p>Total: R${(item.amount * item.price).toFixed(2).toString().replace('.', ',')}</p>
       </div>
       <div className="buttons">
         <Button

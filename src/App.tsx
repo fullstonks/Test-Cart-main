@@ -27,6 +27,7 @@ function App() {
   const { data, isLoading, error } = useQuery<CartItemType[]>('products', getProducts);
 
   const getTotalItems = (items: CartItemType[]) => items.reduce((ack: number, item) => ack + item.amount, 0);
+
   const handleAddToCart = (clickedItem: CartItemType) => {
     setCartItems(check => {
       // is the item already in the cart ?

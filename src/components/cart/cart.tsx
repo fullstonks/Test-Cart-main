@@ -31,7 +31,8 @@ const Cart: React.FC<Props> = ({ cartItems, addToCart, removeFromCart }) => {
           removeFromCart={removeFromCart}
         />
       ))}
-      <h2>Total: R${calculeteTotal(cartItems).toFixed(2)}</h2>
+      <h2>Total: R${calculeteTotal(cartItems).toFixed(2).toString()
+        .replace('.', ',')}</h2>
     </Wrapper>
   )
 }

@@ -2,7 +2,7 @@
 export type CartItemType = {
   id: number;
   category: string;
-  stoke: number;
+  stock: number;
   image: string;
   price: number;
   name: string;
